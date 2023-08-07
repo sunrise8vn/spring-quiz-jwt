@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.css">
+    <style>
+        .quiz-exam {
+            border: solid 1px #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .quiz-exam:hover {
+            background-color: #c5d7f2;
+        }
+
+        .number-question {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Home page</h1>
+
+        <div class="content">
+<!--            <div class="row quiz-exam">-->
+<!--                <div class="col-lg-9">-->
+<!--                    <h2>Quiz Controller</h2>-->
+<!--                    <p>Số lượng: <span class="number-question">15</span> câu hỏi</p>-->
+<!--                </div>-->
+<!--                <div class="col-lg-3" style="text-align: right;">-->
+<!--                    <button class="btn btn-outline-success">-->
+<!--                        Vào thi-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+
+    <script src="/assets/jquery/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+
+    <script>
+
+        const page = {
+            url: {
+                getAllQuizExam: AppBase.BASE_URL_STUDENT + '/get-all-quiz-exam',
+                createNewQuiz: AppBase.BASE_URL_STUDENT + '/new-quiz',
+            },
+            elements: {},
+            loadData: {},
+            commands: {}
+        }
+
+        page.elements.content = $('.content');
+
+        page.commands.getAllQuizExam = () => {
+            $.ajax({
+                type: 'GET',
+                url: page.url.getAllQuizExam
+            })
+                .done((data) => {
+                    page.elements.content.empty();
+
+                    $.each(data, (index, item) => {
+                        const str = page.commands.renderQuizExam(item);
+                        page.elements.content.append(str);
+                    })
+                })
+                .fail((jqXHR) => {
+                    console.log(jqXHR)
+                })
+        }
+
+        page.commands.renderQuizExam = (obj) => {
+            return `
+                <div class="row quiz-exam">
+                    <div class="col-lg-9">
+                        <h2>${obj.title}</h2>
+                        <p>Số lượng: <span class="number-question">${obj.numberQuestion}</span> câu hỏi</p>
+                    </div>
+                    <div class="col-lg-3" style="text-align: right;">
+                        <button class="btn btn-outline-success btn-test" data-exam-id="${obj.id}">
+                            Vào thi
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        page.commands.createNewQuiz = (quizExamId) => {
+            const obj = {
+                quizExamId
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'POST',
+                url: page.url.createNewQuiz,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    location.href = '/students/quiz?id=' + quizExamId + '&page=1'
+                })
+                .fail((jqXHR) => {
+                    console.log(jqXHR)
+                })
+        }
+
+        page.initializeControlEvent = () => {
+            page.elements.content.on('click', '.btn-test', function () {
+                const examId = $(this).data('exam-id');
+
+                page.commands.createNewQuiz(examId);
+            })
+        }
+
+        page.loadData = () => {
+            page.commands.getAllQuizExam();
+        }
+
+        $(() => {
+            page.loadData();
+
+            page.initializeControlEvent();
+        })
+
+    </script>
+</body>
+</html>
