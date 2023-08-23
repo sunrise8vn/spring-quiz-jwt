@@ -3,14 +3,14 @@ package com.cg.api;
 
 import com.cg.exception.DataInputException;
 import com.cg.exception.UnauthorizedException;
-import com.cg.model.Quiz;
-import com.cg.model.QuizExam;
-import com.cg.model.Student;
-import com.cg.model.User;
+import com.cg.model.*;
+import com.cg.model.dto.quiz.QuizTestFinishResDTO;
 import com.cg.model.dto.quiz.QuizTestResDTO;
 import com.cg.model.dto.quizExam.QuizExamDTO;
+import com.cg.model.dto.student.StudentAnswerReqDTO;
 import com.cg.service.question.IQuestionService;
 import com.cg.service.quiz.IQuizService;
+import com.cg.service.quizAnswer.IQuizAnswerService;
 import com.cg.service.quizExam.IQuizExamService;
 import com.cg.service.quizQuestion.IQuizQuestionService;
 import com.cg.service.student.IStudentService;
@@ -27,9 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,6 +54,9 @@ public class StudentAPI {
     private IQuestionService questionService;
 
     @Autowired
+    private IQuizAnswerService quizAnswerService;
+
+    @Autowired
     private IQuizQuestionService quizQuestionService;
 
     @Autowired
@@ -62,12 +64,20 @@ public class StudentAPI {
 
     @GetMapping("/get-all-quiz-exam")
     public ResponseEntity<?> getALlQuizExam() {
+        String username = appUtils.getPrincipalUsername();
 
-        List<QuizExamDTO> quizExams = quizExamService.getAllQuizExamDTO();
+        User user = userService.findByUsername(username).orElseThrow(() -> {
+            throw new UnauthorizedException("Vui lòng đăng nhập để sử dụng dịch vụ");
+        });
+
+        Student student = studentService.findByUser(user).orElseThrow(() -> {
+            throw new UnauthorizedException("Tài khoản học viên không tồn tại, vui lòng kiểm tra lại thông tin");
+        });
+
+        List<QuizExamDTO> quizExams = quizExamService.getAllQuizExamDTO(student.getId());
 
         return new ResponseEntity<>(quizExams, HttpStatus.OK);
     }
-
 
     @PostMapping("/new-quiz")
     public ResponseEntity<?> createNewQuiz(HttpServletRequest request) throws IOException {
@@ -105,10 +115,10 @@ public class StudentAPI {
            throw new DataInputException("Kỳ thi không tồn tại");
         });
 
-        Boolean existQuiz = quizService.existsByStudentAndDone(student, false);
+        Boolean existQuiz = quizService.existsByQuizExamAndStudentAndDone(quizExam, student, false);
 
         if (existQuiz) {
-            throw new DataInputException("Bạn đang có 1 bài kiểm tra chưa làm xong, vui lòng hoàn thành bài kiểm tra đó");
+            throw new DataInputException("Bài kiểm tra này bạn chưa làm xong, vui lòng hoàn thành bài kiểm tra đó");
         }
 
         Quiz quiz = quizService.create(student, quizExam);
@@ -131,7 +141,7 @@ public class StudentAPI {
         });
 
         QuizExam quizExam = quizExamService.findById(quizExamId).orElseThrow(() -> {
-           throw new DataInputException("Thông tin kỳ thi không tồn tại");
+            throw new DataInputException("Thông tin kỳ thi không tồn tại");
         });
 
         offsetIndex--;
@@ -146,12 +156,77 @@ public class StudentAPI {
         }
 
         Quiz quiz = quizService.findByQuizExamAndStudentAndDone(quizExam, student, false).orElseThrow(() -> {
-           throw new DataInputException("Bạn chưa có kỳ thi nào");
+            throw new DataInputException("Bạn chưa có kỳ thi nào");
         });
 
         QuizTestResDTO quizTestResDTO = quizQuestionService.getQuizTestQuestion(quiz, offsetIndex);
 
         return new ResponseEntity<>(quizTestResDTO, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/quiz/{quizExamId}/{quizQuestionId}")
+    public ResponseEntity<?> answer(
+            @PathVariable Long quizExamId, @PathVariable Long quizQuestionId,
+            @RequestBody StudentAnswerReqDTO studentAnswerReqDTO
+    ) {
+
+        String username = appUtils.getPrincipalUsername();
+
+        User user = userService.findByUsername(username).orElseThrow(() -> {
+            throw new UnauthorizedException("Vui lòng đăng nhập để sử dụng dịch vụ");
+        });
+
+        Student student = studentService.findByUser(user).orElseThrow(() -> {
+            throw new UnauthorizedException("Tài khoản học viên không tồn tại, vui lòng kiểm tra lại thông tin");
+        });
+
+        QuizExam quizExam = quizExamService.findById(quizExamId).orElseThrow(() -> {
+            throw new DataInputException("Thông tin kỳ thi không tồn tại");
+        });
+
+        Quiz quiz = quizService.findByQuizExamAndStudentAndDone(quizExam, student, false).orElseThrow(() -> {
+            throw new DataInputException("Bạn chưa có kỳ thi nào");
+        });
+
+        QuizQuestion quizQuestion = quizQuestionService.findById(quizQuestionId).orElseThrow(() -> {
+           throw new DataInputException("Thông tin trả lời của câu hỏi không tồn tại");
+        });
+
+        Optional<QuizAnswer> quizAnswerOptional = quizAnswerService.findByQuizQuestionAndStudentAndDone(quizQuestion, student, false);
+
+        if (quizAnswerOptional.isEmpty()) {
+            quizAnswerService.create(student, quiz, quizQuestion, studentAnswerReqDTO);
+        }
+        else {
+            quizAnswerService.update(quizAnswerOptional.get(), studentAnswerReqDTO);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/quiz/finish")
+    public ResponseEntity<?> finish(@RequestParam("exam-id") Long quizExamId) {
+        String username = appUtils.getPrincipalUsername();
+
+        User user = userService.findByUsername(username).orElseThrow(() -> {
+            throw new UnauthorizedException("Vui lòng đăng nhập để sử dụng dịch vụ");
+        });
+
+        Student student = studentService.findByUser(user).orElseThrow(() -> {
+            throw new UnauthorizedException("Tài khoản học viên không tồn tại, vui lòng kiểm tra lại thông tin");
+        });
+
+        QuizExam quizExam = quizExamService.findById(quizExamId).orElseThrow(() -> {
+            throw new DataInputException("Thông tin kỳ thi không tồn tại");
+        });
+
+        Quiz quiz = quizService.findByQuizExamAndStudentAndDone(quizExam, student, false).orElseThrow(() -> {
+            throw new DataInputException("Bạn chưa có kỳ thi nào");
+        });
+
+        QuizTestFinishResDTO quizTestFinishResDTO = quizExamService.finish(quiz);
+
+        return new ResponseEntity<>(quizTestFinishResDTO, HttpStatus.OK);
     }
 }

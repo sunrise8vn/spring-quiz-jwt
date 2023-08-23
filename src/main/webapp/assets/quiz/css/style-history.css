@@ -20,18 +20,18 @@ p,h1,h2,h3,h4,h5,h6
     place-items: center;
     position: relative;
     background-image: url(../images/bg.jpg);
-    
+
 }
 
 .steps-inner
 {
     min-height: 300px;
-    border-radius: 9px;
+    /*border-radius: 9px;*/
     background-color: rgb(255, 255, 255);
     overflow: hidden;
     z-index: 5;
     position: relative;
-    margin: 50px 0;
+    /*margin: 50px 0;*/
 
 }
 .wrapper
@@ -55,7 +55,7 @@ p,h1,h2,h3,h4,h5,h6
     font-size: 20px;
     color: rgb(0, 10, 56);
     font-weight: bold;
-    text-align: right;
+    /*text-align: right;*/
     display: block;
 }
 .step-bar-inner
@@ -64,7 +64,7 @@ p,h1,h2,h3,h4,h5,h6
     background-color: rgb(233, 233, 233);
     width: 100%;
     height: 16px;
-    margin-top: 0.5rem;    
+    margin-top: 0.5rem;
 }
 .step-bar-inner .step-bar-move
 {
@@ -118,7 +118,7 @@ p,h1,h2,h3,h4,h5,h6
 }
 .form-input input
 {
-    -webkit-appearance: none; 
+    -webkit-appearance: none;
     border: solid 2px rgb(233, 233, 233);
     border-radius: 50%;
     width: 33px;
@@ -235,14 +235,14 @@ p,h1,h2,h3,h4,h5,h6
     font-weight: bold;
     line-height: 1;
 
-      
+
 }
 .countdown .time-ex
 {
     font-size: 12px;
     color: rgb(89, 89, 89);
     font-weight: bold;
-    text-transform: uppercase;  
+    text-transform: uppercase;
     line-height: 1;
 }
 .timer-heading
@@ -260,83 +260,83 @@ p,h1,h2,h3,h4,h5,h6
 
 .thankyou-page
 {
-  background-color: rgb(243, 247, 254);
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: 0;
+    background-color: rgb(243, 247, 254);
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
 }
 .thankyou-page-inner
 {
-	background: rgb(255,255,255);
-  border-radius: 90px;
-  width: 100%;
-  position: relative;
-  top: 30%;
-  /*transform: translateY(50%);*/
-	text-align: center;
+    background: rgb(255,255,255);
+    border-radius: 90px;
+    width: 100%;
+    position: relative;
+    top: 30%;
+    /*transform: translateY(50%);*/
+    text-align: center;
 }
 .tick
 {
-	position: relative;
+    position: relative;
 }
 .done-tick
 {
-	width: 120px;
-	height: 120px;
-	border: solid 1px transparent;
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-	border-left-color: rgb(34,208,136);
-  animation: rotate-circle 0.5s linear forwards;
-  animation-delay: 0.5s;
-	border-radius: 50%;
-	background-color: transparent;
+    width: 120px;
+    height: 120px;
+    border: solid 1px transparent;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-left-color: rgb(34,208,136);
+    animation: rotate-circle 0.5s linear forwards;
+    animation-delay: 0.5s;
+    border-radius: 50%;
+    background-color: transparent;
 }
 
 
 .tick i
 {
-	font-weight: 900;
-	font-size: 50px;
-	color: rgb(34,208,136);
-  position: absolute;
-  animation: tick-icon 0.8s linear forwards;
-  animation-delay: 0.5s;
-  top: 30%;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0;
-  animation-delay: 0.5s;
+    font-weight: 900;
+    font-size: 50px;
+    color: rgb(34,208,136);
+    position: absolute;
+    animation: tick-icon 0.8s linear forwards;
+    animation-delay: 0.5s;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    animation-delay: 0.5s;
 }
 
 .thankyou-page-inner h2
 {
-  font-size: 45px;
-  color: rgb(5, 17, 51);
-  margin-top: 20px;
-  font-weight: bold;
+    font-size: 45px;
+    color: rgb(5, 17, 51);
+    margin-top: 20px;
+    font-weight: bold;
 }
 .thankyou-page-inner p
 {
 
-  font-size: 16px;
-  color: rgb(170, 170, 170);
-  margin-top: 20px;
+    font-size: 16px;
+    color: rgb(170, 170, 170);
+    margin-top: 20px;
 }
 
 .thankyou-page-inner .wrapper
 {
-	padding: 80px 290px;
+    padding: 80px 290px;
 }
 .next-prev-btn .back
-{   
+{
     border: 0;
     border-radius: 50px;
     background-color: #fa4729;
@@ -347,30 +347,141 @@ p,h1,h2,h3,h4,h5,h6
     width: 100%;
     height: 67px;
     margin-top: 15px;
-      
-  }
-  
 
+}
 
+#sub img
+{
+    width: 60px;
+}
 
+.highlight
+{
+    border-top: solid 3px var(--primary-color) !important;
+    border-bottom: solid 3px var(--primary-color) !important;
 
-  #sub img
-  {
-      width: 60px;
-  }
-  
-  .highlight
-  {
-      border-top: solid 3px var(--primary-color) !important;
-      border-bottom: solid 3px var(--primary-color) !important;
-  
-  }
-  
-  
-  #error
-  {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 20;
-  }
+}
+
+#error
+{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+}
+
+h3.no {
+    margin: 0;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+h3.no span.qno {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.qtext {
+    font-size: 1rem;
+    padding: 5px 10px;
+    margin-bottom: 1.5em;
+    background: #f3f7f9;
+    border-radius: 0.215rem;
+}
+
+.outcome, .comment {
+    position: relative;
+    padding: 12px 20px;
+    margin-top: 1rem;
+    border: 1px solid #fbe8cd;
+    color: #7d5a29;
+    background-color: #fcefdc;
+    /*border-color: #fbe8cd;*/
+    border-radius: 0.215rem;
+}
+
+.feedback, .que p {
+    margin: 0 0 0.5em;
+}
+
+.specificfeedback {
+    margin: 0 0 0.5em;
+}
+
+.btn-correct {
+    background-color: #46be8a;
+    color: #fff;
+}
+
+.btn-incorrect {
+    background-color: #f96868;
+    color: #fff;
+}
+
+.text-success {
+    margin-left: 10px;
+    color: #5cb85c!important;
+}
+
+.text-fail {
+    margin-left: 10px;
+    color: red!important;
+}
+
+.form-input-answer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+}
+
+.form-input-answer input {
+    -webkit-appearance: none;
+    border: solid 2px rgb(233, 233, 233);
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: 0.5s all ease;
+}
+
+.form-input-answer input[type="radio"] {
+    border-radius: 50%;
+}
+
+/*.form-input-answer input[type="checkbox"] {*/
+/*    -webkit-appearance: none;*/
+/*    border: solid 2px rgb(233, 233, 233);*/
+/*    width: 33px;*/
+/*    height: 33px;*/
+/*    cursor: pointer;*/
+/*    margin-right: 20px;*/
+/*    transition: 0.5s all ease;*/
+/*}*/
+
+.form-input-answer input:checked {
+    background-color: #fa4729;
+    position: relative;
+}
+
+.form-input-answer input:checked::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "\f00c";
+    line-height: 30px;
+    text-align: center;
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+/*:target::before {*/
+/*    content: " ";*/
+/*    display: block;*/
+/*    height: 76px;*/
+/*    margin-top: -76px;*/
+/*    width: 1px;*/
+/*    pointer-events: none;*/
+/*}*/

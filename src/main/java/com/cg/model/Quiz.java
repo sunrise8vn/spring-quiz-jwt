@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "quiz")
 @Accessors(chain = true)
-public class Quiz {
+public class Quiz extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,13 @@ public class Quiz {
     @JoinColumn(name = "quiz_exam_id", referencedColumnName = "id", nullable = false)
     private QuizExam quizExam;
 
-    @Column(precision = 4, scale = 2)
+    @Column(name = "number_correct", nullable = false)
+    private Long numberCorrect;
+
+    @Column(precision = 4, scale = 2, nullable = false)
     private BigDecimal score;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean done;
 
     @ManyToOne

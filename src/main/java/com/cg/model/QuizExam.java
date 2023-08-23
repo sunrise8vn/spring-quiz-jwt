@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 @NoArgsConstructor
@@ -30,4 +31,10 @@ public class QuizExam extends BaseEntity {
 
     @Column(name = "number_question", nullable = false)
     private Long numberQuestion;
+
+    @Column(nullable = false)
+    private Long minutes;
+
+    @Column(scale = 10, precision = 2, nullable = false)
+    private BigDecimal score;
 }

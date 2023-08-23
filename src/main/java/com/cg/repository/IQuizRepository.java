@@ -14,5 +14,9 @@ public interface IQuizRepository extends JpaRepository<Quiz, Long> {
 
     Optional<Quiz> findByQuizExamAndStudentAndDone(QuizExam quizExam, Student student, Boolean done);
 
+    Optional<Quiz> findByIdAndStudentAndDone(Long id, Student student, Boolean done);
+
     Boolean existsByStudentAndDone(Student student, Boolean done);
+
+    Boolean existsByQuizExamAndStudentAndDone(QuizExam quizExam, Student student, Boolean done);
 }

@@ -74,6 +74,8 @@
         }
 
         page.commands.renderQuizExam = (obj) => {
+            const continueExam = obj.id === obj.quizExamId ? 'Tiếp tục làm bài' : 'Vào thi'
+            const classBtnTest =  obj.id === obj.quizExamId ? 'btn-continue' : 'btn-test';
             return `
                 <div class="row quiz-exam">
                     <div class="col-lg-9">
@@ -81,8 +83,8 @@
                         <p>Số lượng: <span class="number-question">${obj.numberQuestion}</span> câu hỏi</p>
                     </div>
                     <div class="col-lg-3" style="text-align: right;">
-                        <button class="btn btn-outline-success btn-test" data-exam-id="${obj.id}">
-                            Vào thi
+                        <button class="btn btn-outline-success ${classBtnTest}" data-exam-id="${obj.id}">
+                            ${continueExam}
                         </button>
                     </div>
                 </div>
@@ -103,7 +105,8 @@
                 url: page.url.createNewQuiz,
                 data: JSON.stringify(obj)
             })
-                .done((data) => {
+                .done(() => {
+                    console.log('DONE createNewQuiz')
                     location.href = '/students/quiz?id=' + quizExamId + '&page=1'
                 })
                 .fail((jqXHR) => {
@@ -114,8 +117,12 @@
         page.initializeControlEvent = () => {
             page.elements.content.on('click', '.btn-test', function () {
                 const examId = $(this).data('exam-id');
-
                 page.commands.createNewQuiz(examId);
+            })
+
+            page.elements.content.on('click', '.btn-continue', function () {
+                const examId = $(this).data('exam-id');
+                location.href = `/students/quiz?id=${examId}&page=1`
             })
         }
 

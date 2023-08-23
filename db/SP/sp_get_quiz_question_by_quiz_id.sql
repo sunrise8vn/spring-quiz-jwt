@@ -4,27 +4,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_quiz_question_by_quiz_id`(
 )
 BEGIN
     SELECT
-        (
-            SELECT qu.quiz_exam_id
-            FROM quiz AS qu
-            WHERE qu.id = quizId
-        ) AS quizExamId,
+        qu.quiz_exam_id AS quizExamId,
         qq.id AS quizQuestionId,
         qq.question_id AS questionId,
-        (
-            SELECT number_question
-            FROM quiz_exams AS qe
-            WHERE qe.id = (
-                SELECT qu.quiz_exam_id
-                FROM quiz AS qu
-                WHERE qu.id = quizId
-            )
-        ) AS numberQuestion,
+        qe.number_question AS numberQuestion,
+        qu.created_at AS startedOn,
+        qe.minutes AS minutes,
         qq.question_content AS questionContent,
         qq.type AS questionType
     FROM quiz_questions AS qq
+    JOIN quiz AS qu
+    ON qq.quiz_id = qu.id
+    JOIN quiz_exams AS qe
+    ON qe.id = qu.quiz_exam_id
     WHERE qq.quiz_id = quizId
-    ORDER BY id
+    ORDER BY qq.id
     LIMIT 1
     OFFSET offsetIndex
     ;

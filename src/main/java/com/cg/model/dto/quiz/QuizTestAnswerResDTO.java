@@ -1,4 +1,4 @@
-package com.cg.model.dto.quizExam;
+package com.cg.model.dto.quiz;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuizExamDTO {
-
+public class QuizTestAnswerResDTO {
     private Long id;
-    private String title;
-    private Long numberQuestion;
-    private Long quizExamId;
-
+    private String content;
+    private Boolean checked;
 }

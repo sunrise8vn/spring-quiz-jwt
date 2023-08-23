@@ -170,6 +170,11 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-core</artifactId>
+            <version>1.33.0</version>
+        </dependency>
 
     </dependencies>
 

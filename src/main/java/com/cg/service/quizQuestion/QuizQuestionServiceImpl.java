@@ -1,20 +1,22 @@
 package com.cg.service.quizQuestion;
 
-import com.cg.model.Answer;
-import com.cg.model.Question;
-import com.cg.model.Quiz;
-import com.cg.model.QuizQuestion;
+import com.cg.model.*;
+import com.cg.model.dto.quiz.IQuizQuestionAnsweredResDTO;
 import com.cg.model.dto.quiz.IQuizTestResDTO;
+import com.cg.model.dto.quiz.QuizTestAnswerResDTO;
 import com.cg.model.dto.quiz.QuizTestResDTO;
 import com.cg.repository.IAnswerRepository;
+import com.cg.repository.IQuizAnswerRepository;
 import com.cg.repository.IQuizQuestionRepository;
+import com.cg.service.quizAnswer.IQuizAnswerService;
+import org.cloudinary.json.JSONArray;
+import org.cloudinary.json.JSONException;
+import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -27,6 +29,9 @@ public class QuizQuestionServiceImpl implements IQuizQuestionService {
     @Autowired
     private IAnswerRepository answerRepository;
 
+    @Autowired
+    private IQuizAnswerRepository quizAnswerRepository;
+
     @Override
     public List<QuizQuestion> findAll() {
         return null;
@@ -34,7 +39,7 @@ public class QuizQuestionServiceImpl implements IQuizQuestionService {
 
     @Override
     public Optional<QuizQuestion> findById(Long id) {
-        return Optional.empty();
+        return quizQuestionRepository.findById(id);
     }
 
     @Override
@@ -54,15 +59,15 @@ public class QuizQuestionServiceImpl implements IQuizQuestionService {
         Question question = new Question();
         question.setId(quizTestResDTO.getQuestionId());
 
-        List<Answer> answers = answerRepository.findAllByQuestion(question);
+//        List<Answer> answers = answerRepository.findAllByQuestion(question);
 
-        List<String> answerContents = new ArrayList<>();
+//        Map<Long, String> answerContents = new HashMap<>();
+//
+//        for (Answer item : answers) {
+//            answerContents.put(item.getId(), item.getContent());
+//        }
 
-        for (Answer item : answers) {
-            answerContents.add(item.getContent());
-        }
-
-        quizTestResDTO.setAnswers(answerContents);
+//        quizTestResDTO.setAnswers(answerContents);
 
         return quizTestResDTO;
     }
@@ -72,28 +77,98 @@ public class QuizQuestionServiceImpl implements IQuizQuestionService {
         IQuizTestResDTO iQuizTestResDTO = quizQuestionRepository.getQuizQuestionByQuizId(quiz.getId(), offsetIndex);
 
         QuizTestResDTO quizTestResDTO = new QuizTestResDTO();
+        quizTestResDTO.setQuizId(quiz.getId());
         quizTestResDTO.setQuizExamId(quiz.getQuizExam().getId());
         quizTestResDTO.setQuizExamTitle(quiz.getQuizExam().getTitle());
         quizTestResDTO.setQuizQuestionId(iQuizTestResDTO.getQuizQuestionId());
         quizTestResDTO.setQuestionId(iQuizTestResDTO.getQuestionId());
         quizTestResDTO.setNumberQuestion(iQuizTestResDTO.getNumberQuestion());
+        quizTestResDTO.setStartedOn(iQuizTestResDTO.getStartedOn());
+        quizTestResDTO.setMinutes(iQuizTestResDTO.getMinutes());
         quizTestResDTO.setQuestionContent(iQuizTestResDTO.getQuestionContent());
         quizTestResDTO.setQuestionType(iQuizTestResDTO.getQuestionType());
 
-        Question question = new Question();
-        question.setId(quizTestResDTO.getQuestionId());
+//        List<IQuizQuestionAnsweredResDTO> questionAnswered = quizQuestionRepository.findAllIQuizQuestionAnswered(quiz.getId());
+//        quizTestResDTO.setQuestionAnswered(questionAnswered);
 
-        List<Answer> answers = answerRepository.findAllByQuestion(question);
+//        Question question = new Question();
+//        question.setId(quizTestResDTO.getQuestionId());
+//
+//        List<Answer> answers = answerRepository.findAllByQuestion(question);
 
-        List<String> answerContents = new ArrayList<>();
+        QuizQuestion quizQuestion = new QuizQuestion();
+        quizQuestion.setId(iQuizTestResDTO.getQuizQuestionId());
 
-        for (Answer item : answers) {
-            answerContents.add(item.getContent());
+        Optional<QuizAnswer> quizAnswer = quizAnswerRepository.findByQuizQuestionAndStudentAndDone(quizQuestion, quiz.getStudent(), false);
+
+        List<QuizTestAnswerResDTO> quizTestAnswerResDTOS = new ArrayList<>();
+
+        String answersData = quizAnswer.get().getAnswers();
+        JSONArray answerDataArray = new JSONArray(answersData);
+
+        for (int i = 0; i < answerDataArray.length(); i++) {
+            JSONObject object = answerDataArray.getJSONObject(i);
+            QuizTestAnswerResDTO quizTestAnswerResDTO = convertJSONtoQuizTestAnswerResDTO(object);
+            quizTestAnswerResDTOS.add(quizTestAnswerResDTO);
         }
 
-        quizTestResDTO.setAnswers(answerContents);
+        quizTestResDTO.setAnswers(quizTestAnswerResDTOS);
+
+
+//        if (quizAnswer.isEmpty()) {
+//            List<QuizTestAnswerResDTO> quizTestAnswerResDTOS = new ArrayList<>();
+//
+//            for (Answer item : answers) {
+//                QuizTestAnswerResDTO quizTestAnswerResDTO = new QuizTestAnswerResDTO();
+//                quizTestAnswerResDTO.setId(item.getId());
+//                quizTestAnswerResDTO.setContent(item.getContent());
+//                quizTestAnswerResDTO.setChecked(false);
+//
+//                quizTestAnswerResDTOS.add(quizTestAnswerResDTO);
+//            }
+//
+//            quizTestResDTO.setAnswers(quizTestAnswerResDTOS);
+//        }
+//        else {
+//            String answersData = quizAnswer.get().getAnswers();
+//            List<QuizTestAnswerResDTO> quizTestAnswerResDTOS = new ArrayList<>();
+//
+//            JSONArray answerDataArray = new JSONArray(answersData);
+//            for (int i = 0; i < answerDataArray.length(); i++) {
+//                JSONObject object = answerDataArray.getJSONObject(i);
+//                QuizTestAnswerResDTO quizTestAnswerResDTO = convertJSONtoQuizTestAnswerResDTO(object);
+//                String content = findAnswerContentById(answers, quizTestAnswerResDTO.getId());
+//                quizTestAnswerResDTO.setContent(content);
+//                quizTestAnswerResDTOS.add(quizTestAnswerResDTO);
+//            }
+//
+//            quizTestResDTO.setAnswers(quizTestAnswerResDTOS);
+//        }
 
         return quizTestResDTO;
+    }
+
+    public QuizTestAnswerResDTO convertJSONtoQuizTestAnswerResDTO(JSONObject object) throws JSONException {
+        Long id = Long.parseLong(object.getString("id"));
+        String content = object.getString("content");
+        Boolean ans = Boolean.parseBoolean(object.getString("ans"));
+
+        QuizTestAnswerResDTO quizTestAnswerResDTO = new QuizTestAnswerResDTO();
+        quizTestAnswerResDTO.setId(id);
+        quizTestAnswerResDTO.setContent(content);
+        quizTestAnswerResDTO.setChecked(ans);
+
+        return quizTestAnswerResDTO;
+    }
+
+    public String findAnswerContentById(List<Answer> answers, Long id) {
+        for (Answer item : answers) {
+            if (item.getId().equals(id)) {
+                return item.getContent();
+            }
+        }
+
+        return null;
     }
 
     @Override

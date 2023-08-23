@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${quizExamTitle + ': Attempt review'}"></title>
+
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap.css">
+
+    <!-- Font awesome 6 -->
+    <link rel="stylesheet" type="text/css" href="/assets/font-awesome-6.1.1/css/all.css">
+
+    <!-- custom styles -->
+    <link rel="stylesheet" type="text/css" href="/assets/quiz/css/style-history.css">
+    <link rel="stylesheet" type="text/css" href="/assets/quiz/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/assets/quiz/css/animation.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <style>
+        .lg-panel-right {
+            position: fixed;
+            right: 70px;
+            display: flex;
+            flex-direction: column;
+            margin: 50px 0;
+            padding-left: 25px;
+            gap: 15px;
+        }
+        .btn-question {
+            border-radius: 46px;
+            width: 270px;
+            z-index: 10000;
+            padding: 10px 15px;
+        }
+        .btn-question .btn {
+            margin-bottom: 5px;
+        }
+        .btn-finish {
+            border-radius: 46px;
+            width: 270px;
+            z-index: 10000;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body class="show-section">
+
+    <section class="steps" id="step">
+        <div class="container">
+            <header>
+                <nav class="navbar bg-body-tertiary container">
+                    <div class="container-fluid">
+                        <a class="navbar-brand">Lịch sử các bài trắc nghiệm</a>
+                        <div class="d-flex" role="search">
+                            <a href="/students">
+                                <button class="btn btn-outline-success" type="submit">Trang chủ</button>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="content">
+                <div class="mx-auto col-md-10 col-lg-10" style="float: left;">
+
+                    <div style="display: flex;">
+                        <div class="mx-auto col-md-12 col-lg-12">
+                            <div class="wrapper" style="background-color: #fff;">
+                                <table class="table"  id="tb-quiz-review-summary">
+                                    <tbody>
+                                        <tr>
+                                            <th class="cell" scope="row">Started on</th>
+                                            <td class="cell">Monday, 10 May 2021, 5:30 PM</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell" scope="row">State</th>
+                                            <td class="cell">Finished</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell" scope="row">Completed on</th>
+                                            <td class="cell">Sunday, 6 August 2023, 11:37 AM</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="cell" scope="row">Completion rate</th>
+                                            <td class="cell">6.00 out of 10.00 (60%)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-flag-answer" style="background-color: #fff;">
+                        <div style="display: flex;">
+                            <div class="mx-auto col-md-3 col-lg-3">
+                                <section class="steps-inner pop-slide">
+                                    <div class="wrapper">
+                                        <h3 class="no">Question <span class="qno">1</span></h3>
+                                        <div class="state">Correct</div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <div class="mx-auto col-md-10 col-lg-9">
+                                <section class="steps-inner pop-slide">
+                                    <div class="wrapper">
+                                        <div class="step-heading">
+                                            <div class="qtext">
+                                                <p>Quiz</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="form-heading">
+                                                Make a Multiple Choice Test Template Using Excel
+                                            </div>
+                                            <div class="form-inner">
+                                                <label class="form-input-answer">
+                                                    <input type="radio" name="work" value="Activate Developer Tab" disabled checked>
+                                                    Activate Developer Tab
+                                                </label>
+                                                <label class="form-input-answer">
+                                                    <input type="radio" name="work" value="Providing a Lecturer" disabled>
+                                                    Providing a Lecturer
+                                                </label>
+                                                <label class="form-input-answer">
+                                                    <input type="radio" name="work" value="Personally Quizzes" disabled>
+                                                    Personally Quizzes
+                                                </label>
+                                                <label class="form-input-answer">
+                                                    <input type="radio" name="work" value="Massive Batches" disabled checked>
+                                                    Massive Batches
+                                                    <i class="icon fa fa-check text-success fa-fw " title="Correct" aria-label="Correct"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="outcome clearfix">
+                                            <div class="feedback">
+                                                <div class="rightanswer">
+                                                    The correct answer is 'True'.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="mx-auto col-md-2 col-lg-2 lg-panel-right" style="float: left;">
+                    <!-- timer -->
+                    <!--                <div class="sm-stickys">-->
+                    <!--                    <div class="timer">-->
+                    <!--                        <div class="countdown">-->
+                    <!--                            <span id="countdown-timer" class="time">60</span>-->
+                    <!--                            <span class="time-ex">sec</span>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="timer-heading">-->
+                    <!--                            Quiz<br/>-->
+                    <!--                            Time start-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+
+                    <div class="sm-stickys">
+                        <div class="btn-question">
+                        </div>
+                    </div>
+
+                    <!--                <div class="sm-stickys">-->
+                    <!--                    <div class="btn-finish">-->
+                    <!--                        <button id="btnFinish" class="btn btn-outline-success">-->
+                    <!--                            Start a new preview-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+    <div id="error"></div>
+
+    <!-- bootstrap JS -->
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Jquery -->
+    <script src="/assets/jquery/jquery-3.6.0.min.js"></script>
+
+    <!-- custom JS -->
+<!--    <script src="/assets/quiz/js/custom.js"></script>-->
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/app-date.js"></script>
+
+    <script>
+
+        const page = {
+            url: {
+                getQuizReview: AppBase.BASE_URL_HISTORY + '/review'
+            },
+            elements: {},
+            loadData: {},
+            commands: {}
+        }
+
+        const quizId = [[${quizId}]]
+
+
+        page.elements.tbQuizReviewSummaryBody = $('#tb-quiz-review-summary tbody')
+        page.elements.steps = $('#steps');
+        page.elements.btnQuestion = $('.btn-question');
+        page.elements.questionFlagAnswer = $('.question-flag-answer');
+        page.elements.btnFinish = $('#btnFinish');
+
+        page.commands.getQuizReview = () => {
+            $.ajax({
+                type: 'GET',
+                url: page.url.getQuizReview + '/' + quizId
+            })
+                .done((data) => {
+                    console.log(data)
+
+                    const reviewSummaryStr = page.commands.renderTableQuizReviewSummaryBody(data.startedOn, data.completedOn, data.countCorrect, data.numberQuestion)
+                    page.elements.tbQuizReviewSummaryBody.append(reviewSummaryStr);
+
+                    const questions = data.questions;
+
+                    page.elements.questionFlagAnswer.empty();
+
+                    $.each(questions, (index, item) => {
+                        const numberQuestionStr = page.commands.renderNumberQuestion(index, item);
+                        page.elements.btnQuestion.append(numberQuestionStr);
+
+                        const questionAnswerStr = page.commands.renderQuestionFlagAnswer(index, item);
+                        page.elements.questionFlagAnswer.append(questionAnswerStr);
+                    })
+                })
+                .fail((jqXHR) => {
+                    console.log(jqXHR)
+                })
+        }
+
+        page.commands.renderQuestionFlagAnswer = (index, obj) => {
+            const choices = (obj.questionType === 'SINGLE' || obj.questionType === 'TRUE_FALSE')
+                ? 'Chọn một:'
+                : 'Chọn một hoặc nhiều:';
+
+            let answersCorrect = ''
+            let answers = ''
+
+            if (obj.questionType === 'MULTIPLE') {
+                $.each(obj.answers, (i, item) => {
+                    answers += page.commands.renderAnswers(obj.questionType, obj.questionId, item.id, item.answerContent, item.ans, item.correct);
+                    if (item.correct) {
+                        answersCorrect += item.answerContent
+                        if (i < obj.answers.length - 1) {
+                            answersCorrect += ', '
+                        }
+                    }
+                })
+            }
+
+            if (obj.questionType === 'TRUE_FALSE') {
+                $.each(obj.answers, (i, item) => {
+                    answers += page.commands.renderAnswers(obj.questionType, obj.questionId, item.id, item.answerContent, item.ans, item.correct);
+                })
+                answersCorrect = `The correct answer is '${obj.correct}.'`
+            }
+
+            if (obj.questionType === 'SINGLE') {
+                $.each(obj.answers, (i, item) => {
+                    answers += page.commands.renderAnswers(obj.questionType, obj.questionId, item.id, item.answerContent, item.ans, item.correct);
+                    if (item.correct) {
+                        answersCorrect = item.answerContent
+                    }
+                })
+            }
+
+            return `
+                <div id="question-${obj.quizQuestionId}" style="display: flex;">
+                    <div class="mx-auto col-md-3 col-lg-3">
+                        <section class="steps-inner pop-slide">
+                            <div class="wrapper">
+                                <h3 class="no">Question <span class="qno">${++index}</span></h3>
+                                <div class="state">${obj.correct ? 'Correct' : 'Incorrect'}</div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="mx-auto col-md-10 col-lg-9">
+                        <section class="steps-inner pop-slide">
+                            <div class="wrapper">
+                                <div class="step-heading">
+                                    <div class="qtext">
+                                        <p>${obj.questionContent}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="form-heading">
+                                        ${choices}
+                                    </div>
+                                    <div class="form-inner">
+                                        ${answers}
+                                    </div>
+                                </div>
+
+                                <div class="outcome clearfix">
+                                    <div class="feedback">
+                                        ${obj.questionType !== 'TRUE_FALSE'
+                                        ? '<div class="specificfeedback">' +
+                                            `<p>Câu trả lời của bạn ${obj.correct ? 'đúng' : 'sai'}.</p>` +
+                                            '</div>' +
+                                            `<div class="rightanswer">The correct answer is: ${answersCorrect}</div>`
+                                        : '<div class="rightanswer">' +
+                                            `The correct answer is '${obj.correct}'.` +
+                                            '</div>'
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            `;
+        }
+
+        page.commands.renderAnswers = (questionType, questionId, id, title, checked, correct) => {
+            const questionTypeStr = questionType === 'MULTIPLE' ?  'checkbox' : 'radio'
+            const iconCorrect = checked
+                ? correct
+                    ? '<i class="icon fa fa-check text-success fa-fw " title="Correct" aria-label="Correct"></i>'
+                    : '<i class="icon fa-solid fa-xmark text-fail fa-fw" title="Incorrect" aria-label="Incorrect"></i>'
+                : ''
+
+            return `
+                <label class="form-input-answer">
+                    <input type="${questionTypeStr}" name="ip-answer-${questionId}" disabled value="${id}" class="ip-answer" ${checked === true ? 'checked' : ''}>
+                    ${title}
+                    ${iconCorrect}
+                </label>
+            `;
+        }
+
+        page.commands.renderNumberQuestion = (index, obj) => {
+            const correct = obj.correct === true ? 'btn-correct' : 'btn-incorrect';
+            return `
+                <a href="#question-${obj.quizQuestionId}" data-href="question-${obj.quizQuestionId}">
+                    <button class="btn ${correct} btn-num-question" data-num="${++index}">
+                        ${index}
+                    </button>
+                </a>
+             `;
+        }
+
+        page.commands.renderTableQuizReviewSummaryBody = (startedOn, completedOn, countCorrect, numberQuestion) => {
+            const startedOnStr = formatDate(startedOn);
+            const completedOnStr = formatDate(completedOn);
+            const completionRate = countCorrect / numberQuestion * 100;
+
+            return `
+                <tr>
+                    <th class="cell" scope="row">Started on</th>
+                    <td class="cell">${startedOnStr}</td>
+                </tr>
+                <tr>
+                    <th class="cell" scope="row">State</th>
+                    <td class="cell">Finished</td>
+                </tr>
+                <tr>
+                    <th class="cell" scope="row">Completed on</th>
+                    <td class="cell">${completedOnStr}</td>
+                </tr>
+                <tr>
+                    <th class="cell" scope="row">Completion rate</th>
+                    <td class="cell"><b>${countCorrect}</b> out of ${numberQuestion} (<b>${completionRate}</b>%)</td>
+                </tr>
+            `;
+        }
+
+        page.commands.handleScrollTarget = () => {
+            $('.btn-question').on('click', 'a',function(e) {
+                const href = '#' + $(this).data('href')
+                e.preventDefault();
+                $(document).scrollTop($(href).position().top - 80);
+            });
+        }
+
+        page.initializeControlEvent = () => {
+            page.commands.handleScrollTarget();
+        }
+
+        page.loadData = () => {
+            page.elements.tbQuizReviewSummaryBody.empty();
+            page.commands.getQuizReview();
+        }
+
+        $(() => {
+            page.loadData();
+            page.initializeControlEvent();
+        })
+
+
+    </script>
+
+</body>
+</html>

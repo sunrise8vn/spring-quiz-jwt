@@ -28,10 +28,10 @@ form {
 }
 
 table th {
-    background-color: #4CAF50 !important;
-    color: #fff;
-    border: 1px solid #ddd;
-    text-align: center;
+    /*background-color: #4CAF50 !important;*/
+    /*color: #fff;*/
+    /*border: 1px solid #ddd;*/
+    /*text-align: center;*/
 }
 
 table thead th {
@@ -77,10 +77,12 @@ form label {
 }
 
 header {
-    background: #299be4;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 3px 3px 0 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 9999;
 }
 
 header .btn {
@@ -89,6 +91,10 @@ header .btn {
     outline: none !important;
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.content {
+    margin-top: 100px;
 }
 
 .footer {

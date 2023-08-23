@@ -26,13 +26,17 @@ public class QuizAnswer {
     @JoinColumn(name = "quiz_question_id", referencedColumnName = "id", nullable = false)
     private QuizQuestion quizQuestion;
 
+    @Lob
+    private String answers;
+
     @ManyToOne
-    @JoinColumn(name = "answer_id", referencedColumnName = "id", nullable = false)
-    private Answer answer;
+    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
+    private Student student;
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
+    private Quiz quiz;
 
     @Column(nullable = false)
-    private String content;
-
-    @Column(nullable = false)
-    private Boolean correct;
+    private Boolean done;
 }

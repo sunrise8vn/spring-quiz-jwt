@@ -6,6 +6,8 @@ class AppBase {
     static BASE_URL_AUTH = this.BASE_API + "/auth";
     static BASE_URL_STAFF = this.BASE_API + "/staffs";
     static BASE_URL_STUDENT = this.BASE_API + "/students";
+
+    static BASE_URL_HISTORY = this.BASE_API + "/histories";
     static BASE_URL_PROVINCE = "https://vapi.vnappmob.com/api/province";
 
     static AlertMessageEn = class {
@@ -147,6 +149,16 @@ class AppBase {
 
     static formatTooltip() {
         $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    static modifyUrl(title, url) {
+        if (typeof (history.pushState) != "undefined") {
+            const obj = {
+                Title: title,
+                Url: url
+            };
+            history.pushState(obj, obj.Title, obj.Url);
+        }
     }
 }
 
